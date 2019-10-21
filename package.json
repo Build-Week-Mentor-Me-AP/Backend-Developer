@@ -1,7 +1,7 @@
 {
-  "name": "nodeauth-challenge",
+  "name": "mentor-me",
   "version": "1.0.0",
-  "description": "Authentication Sprint Challenge",
+  "description": "Backend for the Mentor Me application",
   "main": "index.js",
   "scripts": {
     "server": "nodemon index.js",
