@@ -3,21 +3,48 @@ const db = require("../database/dbConfig");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-router.post("/register", (req, res) => {
-  if (!req.body.username || !req.body.password) {
+router.post("/register/owner", (req, res) => {
+  if (!req.body.name || !req.body.password) {
     res.status(400).json({
-      errorMessage: "Please provide username and password for the user."
+      errorMessage: "Please provide username, name and password for the user."
     });
   } else {
     req.body.password = bcrypt.hashSync(req.body.password, 12);
 
-    db.register(req.body)
+    db.findBy("zuckk")
+      .first()
+      .then(user => console.log(user))
+      .catch(e => console.log(e));
+
+    db.registerOwner(req.body)
       .then(account => {
         res.status(201).json(account);
       })
       .catch(error => {
         res.status(500).json({
-          error: "There was an error while saving the user to the database"
+          error: "There was an error while saving the owner to the database"
+        });
+      });
+  }
+});
+
+router.post("/register/entrepreneur", (req, res) => {
+  if (!req.body.username || !req.body.name || !req.body.password) {
+    res.status(400).json({
+      errorMessage:
+        "Please provide username, name and password for the entrepreneur."
+    });
+  } else {
+    req.body.password = bcrypt.hashSync(req.body.password, 12);
+
+    db.registerEntrepreneur(req.body)
+      .then(account => {
+        res.status(201).json(account);
+      })
+      .catch(error => {
+        res.status(500).json({
+          error:
+            "There was an error while saving the entrepreneur to the database"
         });
       });
   }
@@ -37,7 +64,6 @@ router.post("/login", (req, res) => {
         if (user && bcrypt.compareSync(req.body.password, user.password)) {
           const token = generateToken(user);
           req.headers.authorization = token;
-          console.log(req.headers.authorization);
           res.status(200).json({ message: "Successfully logged in", token });
         } else res.status(401).json({ message: "Invalid user credentials" });
       })

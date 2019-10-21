@@ -1,3 +1,5 @@
+const bcrypt = require("bcryptjs");
+
 exports.seed = function(knex) {
   return knex("entrepreneurs")
     .truncate()
@@ -6,6 +8,7 @@ exports.seed = function(knex) {
         {
           username: "oswin",
           name: "Clara Oswin Oswald",
+          password: bcrypt.hashSync("password"),
           bio: "Run you clever boy, and remember!",
           avatar:
             "https://steamuserimages-a.akamaihd.net/ugc/264967316455868003/EB685FC16EF794F9E8ADD3F69A4677CF51D35E0A/"
@@ -13,6 +16,7 @@ exports.seed = function(knex) {
         {
           username: "tardis",
           name: "John Smith",
+          password: bcrypt.hashSync("123456"),
           bio:
             "I have 29 businesses on the side away from my 80 hour a week desk job. I placed that hardship onto myself to come out of it stronger than ever!",
           avatar:
@@ -21,6 +25,7 @@ exports.seed = function(knex) {
         {
           username: "kefimochi",
           name: "Kate Efimova",
+          password: bcrypt.hashSync("Qwerty"),
           bio: "Interested to start my own business some day!",
           avatar:
             "https://ca.slack-edge.com/T4JUEB3ME-UJZ8W50QN-b159b0cdf5db-512"

@@ -3,23 +3,38 @@ const configOptions = require("../knexfile").development;
 const db = knex(configOptions);
 
 module.exports = {
-  find,
+  findEntrepreneurs,
+  findOwners,
+  findQuestions,
+  findAnswers,
   findBy,
   findId,
-  register,
+  registerEntrepreneur,
+  registerOwner,
   login,
   update,
   remove
 };
 
-function find() {
-  console.log("Got to the find function");
-  return db("users");
+function findEntrepreneurs() {
+  return db("entrepreneurs");
+}
+
+function findOwners() {
+  return db("business_owners");
+}
+
+function findQuestions() {
+  return db("questions");
+}
+
+function findAnswers() {
+  return db("answers");
 }
 
 function findBy(str) {
-  console.log("str", str.toString());
-  return db("users").where({ username: str.toString() });
+  let entrepreneurs = db("entrepreneurs").where({ username: str });
+  let owners = db("business_owners").where({ username: str });
 }
 
 function findId(str) {
@@ -29,8 +44,12 @@ function findId(str) {
     .first();
 }
 
-function register(resource) {
-  return db("users").insert(resource);
+function registerEntrepreneur(resource) {
+  return db("entrepreneurs").insert(resource);
+}
+
+function registerOwner(resource) {
+  return db("business_owners").insert(resource);
 }
 
 function login(resource) {

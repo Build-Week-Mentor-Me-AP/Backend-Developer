@@ -13,9 +13,13 @@ exports.up = function(knex) {
         .defaultTo(
           "https://www.nhlbi.nih.gov/sites/default/files/styles/square_crop/public/2017-12/genericavatar_64.png?itok=B07OtsV0"
         );
+      ent
+        .string("password", 18)
+        .notNullable()
+        .defaultTo("");
     })
     .createTable("business_owners", bus => {
-      bus.increments();
+      bus.string("username", 128).primary();
       bus.string("name").notNullable();
       bus
         .text("bio", 238)
@@ -27,6 +31,10 @@ exports.up = function(knex) {
         .defaultTo(
           "https://www.nhlbi.nih.gov/sites/default/files/styles/square_crop/public/2017-12/genericavatar_64.png?itok=B07OtsV0"
         );
+      bus
+        .string("password", 18)
+        .notNullable()
+        .defaultTo("");
     })
     .createTable("questions", qs => {
       qs.increments();
@@ -58,10 +66,10 @@ exports.up = function(knex) {
         .onUpdate("CASCADE")
         .onDelete("CASCADE");
       answ
-        .integer("bus_owner_id")
+        .string("bus_owner_username")
         .unsigned()
         .notNullable()
-        .references("id")
+        .references("username")
         .inTable("business_owners")
         .onUpdate("CASCADE")
         .onDelete("CASCADE");
