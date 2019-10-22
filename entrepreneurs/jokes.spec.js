@@ -1,21 +1,16 @@
 const supertest = require("supertest");
 const server = require("../api/server");
 
-describe("GET / jokes model", () => {
-  it("should return 401 hhtp status code when no user is logged in", async () => {
-    let response = await supertest(server).get("/api/jokes");
-    expect(response.status).toBe(401);
-  });
-
+describe("GET / owners model", () => {
   it("should return a 200 if a user logged in session is present", async () => {
     let logIn = await supertest(server)
-      .post("/api/auth/login")
+      .post("/api/login")
       .send({
-        username: "admin",
-        password: "password"
+        username: "elonmusk",
+        password: "space"
       });
     let response = await supertest(server)
-      .get("/api/jokes")
+      .get("/api/owners")
       .set("Authorization", logIn.body.token);
     expect(response.status).toBe(200);
   });

@@ -7,8 +7,8 @@ describe("POST / login", () => {
     let response = await supertest(server)
       .post("/api/login")
       .send({
-        username: "elonmusk",
-        password: "space"
+        username: "oswin",
+        password: "password"
       });
     expect(response.status).toBe(200);
   });
