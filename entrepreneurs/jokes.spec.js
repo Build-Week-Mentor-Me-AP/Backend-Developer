@@ -1,5 +1,3 @@
-const Hobbits = require("./jokes-router");
-const db = require("../database/dbConfig");
 const supertest = require("supertest");
 const server = require("../api/server");
 

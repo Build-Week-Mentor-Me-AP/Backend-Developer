@@ -1,5 +1,3 @@
-const auth = require("./auth-router");
-const authMiddleware = require("./authenticate-middleware");
 const db = require("../database/dbConfig");
 const supertest = require("supertest");
 const server = require("../api/server");
@@ -45,11 +43,12 @@ describe("POST / register", () => {
       });
     expect(response.status).toBe(201);
     let id = await db.matchOwn("testUser");
-    await db.removeOwn(id.id);
+    console.log(id);
+    await db.removeOwn(id.username);
   });
   it("should return 500 if username of entrepreneur is already in the database", async () => {
     let response = await supertest(server)
-      .post("/api/register/entrepreneurs")
+      .post("/api/register/entrepreneur")
       .send({
         username: "tardis",
         name: "Adams Mr",

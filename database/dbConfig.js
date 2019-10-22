@@ -105,8 +105,8 @@ function remove(id) {
     .del();
 }
 
-function removeOwn(id) {
+function removeOwn(str) {
   return db("business_owners")
-    .where("id", Number(id))
+    .where("username", String(str))
     .del();
 }
