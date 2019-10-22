@@ -23,7 +23,7 @@ describe("POST / login", () => {
   });
   it("should return 401 unauthorized if the user doesn't exist on the database", async () => {
     let response = await supertest(server)
-      .post("/api/auth/login")
+      .post("/api/login")
       .send({
         username: "username",
         password: "123"
@@ -43,8 +43,7 @@ describe("POST / register", () => {
       });
     expect(response.status).toBe(201);
     let id = await db.matchOwn("testUser");
-    console.log(id);
-    await db.removeOwn(id.username);
+    await db.removeOwn(id[0].username);
   });
   it("should return 500 if username of entrepreneur is already in the database", async () => {
     let response = await supertest(server)

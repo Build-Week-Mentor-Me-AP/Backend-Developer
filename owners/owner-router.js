@@ -8,7 +8,18 @@ const router = express.Router();
 router.get("/", (req, res) => {
   db.findOwners()
     .then(account => {
-      res.status(200).json(account);
+      let newArr = [];
+
+      // Takes off the password from the response for security purposes
+      account.forEach(acc =>
+        newArr.push({
+          username: acc.username,
+          name: acc.name,
+          bio: acc.bio,
+          avatar: acc.avatar
+        })
+      );
+      res.status(200).json(newArr);
     })
     .catch(error => {
       res

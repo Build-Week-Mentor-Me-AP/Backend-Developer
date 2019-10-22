@@ -14,7 +14,7 @@ module.exports = {
   registerOwner,
   login,
   update,
-  remove,
+  removeEnt,
   matchEnt,
   matchOwn,
   removeOwn
@@ -99,14 +99,14 @@ function update(id, resource) {
     .where("id", Number(id))
     .update(resource);
 }
-function remove(id) {
-  return db("users")
-    .where("id", Number(id))
+function removeEnt(id) {
+  return db("entrepreneurs")
+    .where({ username: String(str) })
     .del();
 }
 
 function removeOwn(str) {
   return db("business_owners")
-    .where("username", String(str))
+    .where({ username: str })
     .del();
 }
