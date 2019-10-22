@@ -16,7 +16,8 @@ module.exports = {
   update,
   remove,
   matchEnt,
-  matchOwn
+  matchOwn,
+  removeOwn
 };
 
 function findEntrepreneurs() {
@@ -100,6 +101,12 @@ function update(id, resource) {
 }
 function remove(id) {
   return db("users")
+    .where("id", Number(id))
+    .del();
+}
+
+function removeOwn(id) {
+  return db("business_owners")
     .where("id", Number(id))
     .del();
 }

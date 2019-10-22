@@ -60,11 +60,9 @@ router.post("/login", (req, res) => {
           req.headers.authorization = token;
           res.status(200).json({ message: "Successfully logged in", token });
         } else {
-          console.log("fucking undefined, search in owners");
           db.matchOwn(req.body.username)
             .first()
             .then(owner => {
-              console.log(owner);
               if (
                 owner &&
                 bcrypt.compareSync(req.body.password, owner.password)
@@ -80,7 +78,7 @@ router.post("/login", (req, res) => {
             .catch(e => console.log(e));
         }
       })
-      .catch(e => console.log("Ent error"));
+      .catch(e => console.log(e));
   }
 });
 
