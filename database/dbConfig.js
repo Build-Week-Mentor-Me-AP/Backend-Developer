@@ -7,13 +7,16 @@ module.exports = {
   findOwners,
   findQuestions,
   findAnswers,
-  findBy,
+  findQuestionsById,
+  findAnswersOnQuestions,
   findId,
   registerEntrepreneur,
   registerOwner,
   login,
   update,
-  remove
+  remove,
+  matchEnt,
+  matchOwn
 };
 
 function findEntrepreneurs() {
@@ -32,9 +35,12 @@ function findAnswers() {
   return db("answers");
 }
 
-function findBy(str) {
-  let entrepreneurs = db("entrepreneurs").where({ username: str });
-  let owners = db("business_owners").where({ username: str });
+function matchEnt(str) {
+  return db("entrepreneurs").where({ username: str });
+}
+
+function matchOwn(str) {
+  return db("business_owners").where({ username: str });
 }
 
 function findId(str) {
@@ -42,6 +48,35 @@ function findId(str) {
     .where({ username: str.toString() })
     .select("users.id")
     .first();
+}
+
+function findTasks(id) {
+  return db("tasks")
+    .join("projects", "tasks.project_id", "=", "projects.id")
+    .where({ project_id: id })
+    .select(
+      "tasks.id",
+      "tasks.description",
+      "tasks.notes",
+      "tasks.completed",
+      "projects.name as project_name",
+      "projects.description as project_description"
+    )
+    .then(tasks => {
+      return tasks.map(task => {
+        return { ...task, completed: Boolean(task.completed) };
+      });
+    });
+}
+
+function findAnswersOnQuestions(questionID) {
+  console.log(questionID);
+  return db("answers").where({ question_id: questionID });
+}
+
+function findQuestionsById(questionID) {
+  console.log(questionID);
+  return db("questions").where({ id: questionID });
 }
 
 function registerEntrepreneur(resource) {

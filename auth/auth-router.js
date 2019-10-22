@@ -11,11 +11,6 @@ router.post("/register/owner", (req, res) => {
   } else {
     req.body.password = bcrypt.hashSync(req.body.password, 12);
 
-    db.findBy("zuckk")
-      .first()
-      .then(user => console.log(user))
-      .catch(e => console.log(e));
-
     db.registerOwner(req.body)
       .then(account => {
         res.status(201).json(account);
@@ -57,27 +52,44 @@ router.post("/login", (req, res) => {
         "Please provide username and password for the user when logging in."
     });
   } else {
-    // Remember to add first() because it'll give an array
-    db.findBy(req.body.username)
+    db.matchEnt(req.body.username)
       .first()
       .then(user => {
         if (user && bcrypt.compareSync(req.body.password, user.password)) {
           const token = generateToken(user);
           req.headers.authorization = token;
           res.status(200).json({ message: "Successfully logged in", token });
-        } else res.status(401).json({ message: "Invalid user credentials" });
+        } else {
+          console.log("fucking undefined, search in owners");
+          db.matchOwn(req.body.username)
+            .first()
+            .then(owner => {
+              console.log(owner);
+              if (
+                owner &&
+                bcrypt.compareSync(req.body.password, owner.password)
+              ) {
+                const token = generateToken(owner);
+                req.headers.authorization = token;
+                res
+                  .status(200)
+                  .json({ message: "Successfully logged in", token });
+              } else
+                res.status(401).json({ message: "Invalid user credentials" });
+            })
+            .catch(e => console.log(e));
+        }
       })
-      .catch(err =>
-        res
-          .status(500)
-          .json({ error: "There was trouble when accessing the user" })
-      );
+      .catch(e => console.log("Ent error"));
   }
 });
 
 function generateToken(user) {
   const payload = {
-    nickname: user.nickname
+    username: user.username,
+    name: user.name,
+    avatar: user.avatar,
+    bio: user.bio
   };
   const secret = "idsfwgTARDISr37yehiwfe7rgfsdf73wupp999(^%$";
   const options = {
