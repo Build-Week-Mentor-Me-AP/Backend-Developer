@@ -16,10 +16,11 @@ server.use(cors());
 server.use(express.json());
 
 server.use("/api", authRouter);
-server.use("/api/entrepreneurs", EntrepreneurRouter);
-server.use("/api/owners", OwnersRouter);
+server.use("/api/entrepreneurs", authenticate, EntrepreneurRouter);
+server.use("/api/owners", authenticate, OwnersRouter);
+
+// Questions are public for everyone but only registered users can see the answers from professional owners
 server.use("/api/questions", QuestionsRouter);
-server.use("/api/answers", AnswersRouter);
-// server.use("/api/jokes", authenticate, EntrepreneurRouter);
+server.use("/api/answers", authenticate, AnswersRouter);
 
 module.exports = server;

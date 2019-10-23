@@ -17,8 +17,6 @@ router.get("/", (req, res) => {
     });
 });
 
-//findAnswersByQuestionID
-
 function generateToken(user) {
   const payload = {
     username: user.username,

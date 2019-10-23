@@ -11,6 +11,7 @@ router.get("/", (req, res) => {
       let newArr = [];
 
       // Takes off the password from the response for security purposes
+      // In Twitter, for example, you can search for public user info. Same here.
       account.forEach(acc =>
         newArr.push({
           username: acc.username,
