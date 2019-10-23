@@ -15,7 +15,7 @@ server.use(helmet());
 server.use(cors());
 server.use(express.json());
 
-server.use("/", (req, res) => res.send("Welcome to the Mentor Me backend!"));
+// server.use("/", (req, res) => res.send("Welcome to the Mentor Me backend!"));
 server.use("/api", authRouter);
 server.use("/api/entrepreneurs", EntrepreneurRouter);
 server.use("/api/owners", authenticate, OwnersRouter);
