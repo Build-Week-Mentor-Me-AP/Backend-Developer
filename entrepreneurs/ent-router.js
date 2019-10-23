@@ -8,7 +8,19 @@ const router = express.Router();
 router.get("/", (req, res) => {
   db.findEntrepreneurs()
     .then(account => {
-      res.status(200).json(account);
+      let newArr = [];
+
+      // Takes off the password from the response for security purposes
+      // In Twitter, for example, you can search for public user info. Same here.
+      account.forEach(acc =>
+        newArr.push({
+          username: acc.username,
+          name: acc.name,
+          bio: acc.bio,
+          avatar: acc.avatar
+        })
+      );
+      res.status(200).json(newArr);
     })
     .catch(error => {
       res
