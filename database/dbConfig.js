@@ -17,7 +17,9 @@ module.exports = {
   removeEnt,
   matchEnt,
   matchOwn,
-  removeOwn
+  removeOwn,
+  removeQuestion,
+  updateQuestion
 };
 
 function findEntrepreneurs() {
@@ -53,15 +55,15 @@ function findId(str) {
 
 function findTasks(id) {
   return db("tasks")
-    .join("projects", "tasks.project_id", "=", "projects.id")
-    .where({ project_id: id })
+    .join("questions", "tasks.question_id", "=", "questions.id")
+    .where({ question_id: id })
     .select(
       "tasks.id",
       "tasks.description",
       "tasks.notes",
       "tasks.completed",
-      "projects.name as project_name",
-      "projects.description as project_description"
+      "questions.name as question_name",
+      "questions.description as question_description"
     )
     .then(tasks => {
       return tasks.map(task => {
@@ -109,4 +111,16 @@ function removeOwn(str) {
   return db("business_owners")
     .where({ username: str })
     .del();
+}
+
+function removeQuestion(id) {
+  return db("questions")
+    .where("id", Number(id))
+    .del();
+}
+
+function updateQuestion(id, question) {
+  return db("questions")
+    .where("id", Number(id))
+    .update(question);
 }

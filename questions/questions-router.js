@@ -7,8 +7,8 @@ const router = express.Router();
 
 router.get("/", (req, res) => {
   db.findQuestions()
-    .then(account => {
-      res.status(200).json(account);
+    .then(question => {
+      res.status(200).json(question);
     })
     .catch(error => {
       res
@@ -50,6 +50,38 @@ router.get("/:id/answers", (req, res) => {
       res
         .status(500)
         .json({ error: "The answers information could not be retrieved." });
+    });
+});
+
+router.put("/:id", (req, res) => {
+  db.updateQuestion(req.params.id, req.body)
+    .then(question => {
+      if (!question) {
+        res.status(404).json({
+          message: "The questions with the specified ID does not exist."
+        });
+      } else res.status(200).json(question);
+    })
+    .catch(error => {
+      res
+        .status(500)
+        .json({ error: "The questions information could not be modified." });
+    });
+});
+
+router.delete("/:id", (req, res) => {
+  db.removeQuestion(req.params.id)
+    .then(question => {
+      if (!question) {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
+      } else {
+        res.status(204).send({});
+      }
+    })
+    .catch(error => {
+      res.status(500).json({ error: "The post could not be removed" });
     });
 });
 
